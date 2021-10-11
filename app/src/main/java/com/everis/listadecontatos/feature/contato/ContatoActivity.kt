@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.everis.listadecontatos.R
+import com.everis.listadecontatos.application.ContatoApplication
 import com.everis.listadecontatos.bases.BaseActivity
 import com.everis.listadecontatos.feature.listacontatos.model.ContatosVO
 import com.everis.listadecontatos.singleton.ContatoSingleton
@@ -17,22 +18,24 @@ class ContatoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contato)
-        setupToolBar(toolBar, "Contato",true)
+        setupToolBar(toolBar, "Contato", true)
         setupContato()
         btnSalvarConato.setOnClickListener { onClickSalvarContato() }
     }
 
-    private fun setupContato(){
-        index = intent.getIntExtra("index",-1)
-        if (index == -1){
+    private fun setupContato() {
+        index = intent.getIntExtra("index", -1)
+        if (index == -1) {
             btnExcluirContato.visibility = View.GONE
             return
         }
-        etNome.setText(ContatoSingleton.lista[index].nome)
-        etTelefone.setText(ContatoSingleton.lista[index].telefone)
+        var lista = ContatoApplication.instance.helperDB?.buscarContatos("$index", true) ?: return
+        var contato = lista.getOrNull(0) ?: return
+        etNome.setText(contato.nome)
+        etTelefone.setText(contato.telefone)
     }
 
-    private fun onClickSalvarContato(){
+    private fun onClickSalvarContato() {
         val nome = etNome.text.toString()
         val telefone = etTelefone.text.toString()
         val contato = ContatosVO(
@@ -40,16 +43,19 @@ class ContatoActivity : BaseActivity() {
             nome,
             telefone
         )
-        if(index == -1) {
-            ContatoSingleton.lista.add(contato)
-        }else{
-            ContatoSingleton.lista.set(index,contato)
+
+        if (index == -1) {
+            ContatoApplication.instance.helperDB?.salvarContato(contato)
+
+        } else {
+            //ContatoSingleton.lista.set(index, contato)
         }
         finish()
+
     }
 
     fun onClickExcluirContato(view: View) {
-        if(index > -1){
+        if (index > -1) {
             ContatoSingleton.lista.removeAt(index)
             finish()
         }

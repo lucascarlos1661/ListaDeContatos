@@ -1,5 +1,6 @@
 package com.everis.listadecontatos.helpers
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -17,8 +18,8 @@ class HelperDB(
     val TABLE_NAME = "contato"
     val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
             "id INTEGER NOT NULL," +
-            "nome TEXT NOT NULL" +
-            "telefone TEXT NOT NULL" +
+            "nome TEXT NOT NULL," +
+            "telefone TEXT NOT NULL," +
             "" +
             "PRIMARY KEY(id AUTOINCREMENT)" +
             ")"
@@ -35,11 +36,25 @@ class HelperDB(
         onCreate(db)
     }
 
-    fun buscarContatos(busca: String): List<ContatosVO> {
+    fun buscarContatos(busca: String, isBuscaPorID: Boolean = false): List<ContatosVO> {
         val db = readableDatabase ?: return mutableListOf()
-        val lista = mutableListOf<ContatosVO>()
-        val sql = "SELECT * FROM $TABLE_NAME"
-        var cursor = db.rawQuery(sql, arrayOf()) ?: return mutableListOf()
+        var lista = mutableListOf<ContatosVO>()
+        var where: String? = null
+        var args: Array<String> = arrayOf()
+
+        if (isBuscaPorID) {
+            where = "id = ?"
+            args = arrayOf("$busca")
+        } else {
+            where = "nome LIKE ?"
+            args = arrayOf("%$busca%")
+        }
+
+        var cursor = db.query(TABLE_NAME, null, where, args, null, null, null)
+        if (cursor == null) {
+            db.close()
+            return mutableListOf()
+        }
         while (cursor.moveToNext()) {
             var contato = ContatosVO(
                 cursor.getInt(cursor.getColumnIndex("id")),
@@ -48,6 +63,13 @@ class HelperDB(
             )
             lista.add(contato)
         }
+        db.close()
         return lista
+    }
+
+    fun salvarContato(contato: ContatosVO) {
+        val db = writableDatabase ?: return
+        var content = ContentValues()
+        db.close()
     }
 }
