@@ -83,4 +83,11 @@ class HelperDB(
         db.delete(TABLE_NAME, where, args)
         db.close()
     }
+
+    fun updateContato(contato: ContatosVO) {
+        val db = writableDatabase ?: return
+        val sql = "UPDATE $TABLE_NAME SET nome = ?, telefone = ? WHERE id = ?"
+        val args = arrayOf(contato.nome, contato.telefone, contato.id)
+        db.execSQL(sql, args)
+    }
 }
