@@ -47,11 +47,17 @@ class ContatoActivity : BaseActivity() {
             btnExcluirContato.visibility = View.GONE
             return
         }
-        var lista =
-            ContatoApplication.instance.helperDB?.buscarContatos("$idContato", true) ?: return
-        var contato = lista.getOrNull(0) ?: return
-        etNome.setText(contato.nome)
-        etTelefone.setText(contato.telefone)
+        Thread(Runnable {
+            var lista =
+                ContatoApplication.instance.helperDB?.buscarContatos("$idContato", true)
+                    ?: return@Runnable
+            var contato = lista.getOrNull(0) ?: return@Runnable
+            runOnUiThread {
+                etNome.setText(contato.nome)
+                etTelefone.setText(contato.telefone)
+            }
+        }).start()
+
     }
 
     private fun onClickSalvarContato() {
@@ -62,21 +68,32 @@ class ContatoActivity : BaseActivity() {
             nome,
             telefone
         )
-        if (idContato == -1) {
-            ContatoApplication.instance.helperDB?.salvarContato(contato)
+        Thread(Runnable {
+            if (idContato == -1) {
+                ContatoApplication.instance.helperDB?.salvarContato(contato)
 
-        } else {
-            ContatoApplication.instance.helperDB?.updateContato(contato)
-        }
-        finish()
+            } else {
+                ContatoApplication.instance.helperDB?.updateContato(contato)
+            }
+            runOnUiThread {
+                finish()
+            }
+        }).start()
+
 
     }
 
     fun onClickExcluirContato() {
-        if (idContato > -1) {
-            ContatoApplication.instance.helperDB?.deletarContato(idContato)
-            finish()
-            Toast.makeText(this, "Contato excluido", Toast.LENGTH_SHORT).show()
-        }
+        Thread(Runnable {
+            if (idContato > -1) {
+                ContatoApplication.instance.helperDB?.deletarContato(idContato)
+
+            }
+            runOnUiThread {
+                Toast.makeText(this, "Contato excluido", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }).start()
+
     }
 }
