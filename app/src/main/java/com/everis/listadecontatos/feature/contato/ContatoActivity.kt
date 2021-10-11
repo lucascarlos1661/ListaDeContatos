@@ -3,6 +3,8 @@ package com.everis.listadecontatos.feature.contato
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.everis.listadecontatos.R
 import com.everis.listadecontatos.application.ContatoApplication
 import com.everis.listadecontatos.bases.BaseActivity
@@ -13,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_contato.toolBar
 
 class ContatoActivity : BaseActivity() {
 
-    private var index: Int = -1
+    private var idContato: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +23,32 @@ class ContatoActivity : BaseActivity() {
         setupToolBar(toolBar, "Contato", true)
         setupContato()
         btnSalvarConato.setOnClickListener { onClickSalvarContato() }
+
+        btnExcluirContato.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Deseja excluir o contato?")
+                .setCancelable(false)
+                .setPositiveButton("Sim") { dialog, id ->
+                    // Delete selected note from database
+                    onClickExcluirContato()
+                }
+                .setNegativeButton("Não") { dialog, id ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
     }
 
     private fun setupContato() {
-        index = intent.getIntExtra("index", -1)
-        if (index == -1) {
+        idContato = intent.getIntExtra("index", -1)
+        if (idContato == -1) {
             btnExcluirContato.visibility = View.GONE
             return
         }
-        var lista = ContatoApplication.instance.helperDB?.buscarContatos("$index", true) ?: return
+        var lista =
+            ContatoApplication.instance.helperDB?.buscarContatos("$idContato", true) ?: return
         var contato = lista.getOrNull(0) ?: return
         etNome.setText(contato.nome)
         etTelefone.setText(contato.telefone)
@@ -43,8 +62,7 @@ class ContatoActivity : BaseActivity() {
             nome,
             telefone
         )
-
-        if (index == -1) {
+        if (idContato == -1) {
             ContatoApplication.instance.helperDB?.salvarContato(contato)
 
         } else {
@@ -54,10 +72,11 @@ class ContatoActivity : BaseActivity() {
 
     }
 
-    fun onClickExcluirContato(view: View) {
-        if (index > -1) {
-            ContatoSingleton.lista.removeAt(index)
+    fun onClickExcluirContato() {
+        if (idContato > -1) {
+            ContatoApplication.instance.helperDB?.deletarContato(idContato)
             finish()
+            Toast.makeText(this, "Contato excluido", Toast.LENGTH_SHORT).show()
         }
     }
 }

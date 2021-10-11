@@ -70,6 +70,17 @@ class HelperDB(
     fun salvarContato(contato: ContatosVO) {
         val db = writableDatabase ?: return
         var content = ContentValues()
+        content.put("nome", contato.nome)
+        content.put("telefone", contato.telefone)
+        db.insert(TABLE_NAME, null, content)
+        db.close()
+    }
+
+    fun deletarContato(id: Int) {
+        val db = writableDatabase ?: return
+        var where = "id = ?"
+        var args = arrayOf("$id")
+        db.delete(TABLE_NAME, where, args)
         db.close()
     }
 }

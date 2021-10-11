@@ -66,7 +66,6 @@
 
         <Button
             android:id="@+id/btnExcluirContato"
-            android:onClick="onClickExcluirContato"
             android:text="Excluir contato"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
