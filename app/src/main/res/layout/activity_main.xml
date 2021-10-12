@@ -38,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1"
-                android:textColor="#FFFFFF" />
+                android:lines="1"
+                android:textColor="#000" />
 
             <ImageView
                 android:id="@+id/ivLimparBusca"
@@ -71,7 +72,9 @@
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
                 android:src="@android:drawable/ic_input_add"
-                android:tint="#FFFFFF" />
+                android:backgroundTint="@color/design_default_color_primary_dark"
+
+                />
         </FrameLayout>
 
     </LinearLayout>
