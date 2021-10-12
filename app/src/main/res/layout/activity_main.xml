@@ -21,14 +21,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#676767"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center_vertical"
             android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Buscar:"
-                android:textColor="#FFFFFF" />
+                android:textColor="#000" />
 
             <EditText
                 android:id="@+id/etBuscar"
@@ -42,15 +44,15 @@
                 android:id="@+id/ivLimparBusca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                />
+                android:src="@drawable/ic_baseline_clear_24" />
 
             <ImageView
                 android:id="@+id/ivBuscar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:src="@android:drawable/ic_search_category_default" />
+                android:src="@drawable/ic_baseline_search_32" />
+
         </LinearLayout>
 
         <FrameLayout
@@ -78,6 +80,6 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 </FrameLayout>
 
