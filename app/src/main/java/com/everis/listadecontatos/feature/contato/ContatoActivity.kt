@@ -20,7 +20,7 @@ class ContatoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contato)
-        setupToolBar(toolBar, "Contato", true)
+        setupToolBar(toolBar, "Contato", true, hide = false)
         setupContato()
         btnSalvarConato.setOnClickListener { onClickSalvarContato() }
 
