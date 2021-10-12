@@ -23,7 +23,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupToolBar(toolBar, "Lista de contatos", false)
+        setupToolBar(toolBar, "Lista de contatos", false, hide = true)
         setupListView()
         setupOnClicks()
     }
@@ -31,6 +31,11 @@ class MainActivity : BaseActivity() {
     private fun setupOnClicks() {
         fab.setOnClickListener { onClickAdd() }
         ivBuscar.setOnClickListener { onClickBuscar() }
+        ivLimparBusca.setOnClickListener { onClickLimpar() }
+    }
+
+    private fun onClickLimpar() {
+        etBuscar.setText("")
     }
 
     private fun setupListView() {
