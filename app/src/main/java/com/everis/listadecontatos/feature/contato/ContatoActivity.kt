@@ -10,6 +10,7 @@ import com.everis.listadecontatos.application.ContatoApplication
 import com.everis.listadecontatos.bases.BaseActivity
 import com.everis.listadecontatos.feature.listacontatos.model.ContatosVO
 import com.everis.listadecontatos.singleton.ContatoSingleton
+import com.everis.listadecontatos.util.Mask
 import kotlinx.android.synthetic.main.activity_contato.*
 import kotlinx.android.synthetic.main.activity_contato.toolBar
 
@@ -23,6 +24,7 @@ class ContatoActivity : BaseActivity() {
         setupToolBar(toolBar, "Contato", true, hide = false)
         setupContato()
         btnSalvarConato.setOnClickListener { onClickSalvarContato() }
+        etTelefone.addTextChangedListener(Mask.mask("(##) # ####-####", etTelefone))
 
         btnExcluirContato.setOnClickListener {
             val builder = AlertDialog.Builder(this)
