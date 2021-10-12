@@ -65,6 +65,21 @@ class ContatoActivity : BaseActivity() {
     private fun onClickSalvarContato() {
         val nome = etNome.text.toString()
         val telefone = etTelefone.text.toString()
+
+        if (nome.length < 5) {
+            textInputLayoutNome.error = "Nome inválido"
+            return
+        } else {
+            textInputLayoutNome.error = null
+        }
+
+        if (telefone.length < 16){
+            textInputLayoutTelefone.error = "Telefone inválido"
+            return
+        } else {
+            textInputLayoutTelefone.error = null
+        }
+
         val contato = ContatosVO(
             idContato,
             nome,
