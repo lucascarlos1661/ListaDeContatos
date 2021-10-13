@@ -10,4 +10,4 @@ Aplicativo Android de lista de contatos, onde permite ao usuário cadastrar, alt
  - Recycler View
  - Conceitos de threads e loadings
  
- 
+ ![listaContato](https://user-images.githubusercontent.com/59378841/137047807-9fc50b64-eb58-4048-9247-1e26b648740c.gif)
